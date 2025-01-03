@@ -2,10 +2,12 @@ using System;
 class Program{
 	static int[,] nodes;
 	static int N;
-	
+
+	//Used to denote wether the nodes begin at 0 or 1
 	static int NodeIndex=1;
 
 	static int Main(string[] args){
+		//Manual entry of edges cause I'm lazy
 		int[] edges={
 			1,2,3,
 			2,3,5,
@@ -14,6 +16,7 @@ class Program{
 			3,4,4,
 			5,6,3
 		};
+		//Reading in edges
 		N=0;
 		for(int x=0;x<edges.Length;x+=3){
 			if(edges[x]>N)N=edges[x];
@@ -27,6 +30,7 @@ class Program{
 				nodes[x,y]=-1;
 			}
 		}
+
 		float[] influence=new float[N];
 		for(int x=0;x<edges.Length;x+=3){
 			int a=edges[x]-NodeIndex;
@@ -37,11 +41,12 @@ class Program{
 			nodes[b,a]=w;
 		}
 
+		
+		//Actual program begins
 		bool[] visited=new bool[N];
 		bool[] subVisited=new bool[N];
 		bool check;
 		
-		//
 		for(int x=0;x<N;x++){
 			for(int y=0;y<N;y++){
 				subVisited[y]=false;
@@ -69,15 +74,16 @@ class Program{
 				}
 			}
 		}
-		//
-
+		
 		Console.WriteLine(N);
-	
+
+		//Calculating influence score
 		for(int x=0;x<N;x++){
 			influence[x]=0;
 			for(int y=0;y<x;y++){
 				influence[x]+=nodes[x,y];
 			}
+			//Skipping [x,x]
 			for(int y=x+1;y<N;y++){
 				influence[x]+=nodes[x,y];
 			}
@@ -87,7 +93,8 @@ class Program{
 		}
 		
 		Console.Write('\n');	
-	
+
+		//Dumping matrix for testing concerns
 		for(int x=0;x<N;x++){
 			for(int y=0;y<N;y++){
 				Console.Write(nodes[x,y]);
